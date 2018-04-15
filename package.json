@@ -37,7 +37,11 @@
   "dependencies": {
     "bunyan": "^1.8.12",
     "bunyan-format": "^0.2.1",
-    "node-loggly-bulk": "^2.2.2"
+    "node-loggly-bulk": "^2.2.2",
+    "nodemailer": "^4.6.4"
+  },
+  "peerDependencies": {
+    "@reactioncommerce/hooks": "^1.0.1"
   },
   "babel": {
     "presets": [
