@@ -1,7 +1,14 @@
+// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module 'node... Remove this comment to see the full error message
 import loggly from "node-loggly-bulk";
 
 class Bunyan2Loggly {
-  constructor(logglyConfig, bufferLength = 1, bufferTimeout, callback) {
+  _buffer: any;
+  _timeoutId: any;
+  bufferLength: any;
+  bufferTimeout: any;
+  callback: any;
+  logglyClient: any;
+  constructor(logglyConfig: any, bufferLength = 1, bufferTimeout: any, callback: any) {
     if (!logglyConfig || !logglyConfig.token || !logglyConfig.subdomain) {
       throw new Error("bunyan-loggly requires a config object with token and subdomain");
     }
@@ -16,7 +23,7 @@ class Bunyan2Loggly {
     this.callback = callback || function () {};
   }
 
-  write(data) {
+  write(data: any) {
     if (typeof data !== "object") {
       throw new Error("bunyan-loggly requires a raw stream. Please define the type as raw when setting up the bunyan stream.");
     }
@@ -43,7 +50,7 @@ class Bunyan2Loggly {
       [content] = content;
     }
 
-    this.logglyClient.log(content, (error, result) => {
+    this.logglyClient.log(content, (error: any, result: any) => {
       this.callback(error, result, content);
     });
   }

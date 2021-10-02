@@ -1,4 +1,6 @@
+// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module 'buny... Remove this comment to see the full error message
 import Bunyan from "bunyan";
+// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module 'buny... Remove this comment to see the full error message
 import BunyanFormat from "bunyan-format";
 import Bunyan2Loggly from "./loggly";
 
@@ -35,6 +37,7 @@ if (logglyToken && logglySubdomain) {
   const logglyStream = {
     type: "raw",
     level: process.env.LOGGLY_LOG_LEVEL || "DEBUG",
+    // @ts-expect-error ts-migrate(2554) FIXME: Expected 4 arguments, but got 2.
     stream: new Bunyan2Loggly({
       token: logglyToken,
       subdomain: logglySubdomain
