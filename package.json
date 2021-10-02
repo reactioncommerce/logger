@@ -4,10 +4,11 @@
   "description": "Reaction application logging based on Bunyan logger",
   "main": "./dist/main.js",
   "scripts": {
-    "build": "rimraf ./dist && babel src --out-dir ./dist",
-    "lint": "eslint ./src",
+    "build": "tsc",
+    "lint": "eslint",
     "lintfix": "eslint ./src --fix",
-    "watch": "watch 'npm run build' src"
+    "watch": "watch 'npm run build' src",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -20,50 +21,28 @@
   },
   "homepage": "https://github.com/reactioncommerce/logger#readme",
   "devDependencies": {
-    "@reactioncommerce/eslint-config": "^1.0.1",
-    "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.2.2",
-    "babel-plugin-add-module-exports": "^1.0.2",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "eslint": "^4.19.1",
-    "eslint-plugin-import": "^2.10.0",
-    "eslint-plugin-jest": "^21.15.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-node": "^10.0.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.7.0",
-    "rimraf": "^2.6.2",
-    "semantic-release": "^17.2.3",
+    "@reactioncommerce/eslint-config": "^2.2.0",
+    "@types/bunyan": "^1.8.7",
+    "@types/bunyan-format": "^0.2.4",
+    "@types/node": "^16.10.2",
+    "@types/node-loggly-bulk": "^2.2.1",
+    "@typescript-eslint/eslint-plugin": "^4.32.0",
+    "@typescript-eslint/parser": "^4.32.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jest": "^23.20.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "eslint-plugin-you-dont-need-lodash-underscore": "^6.12.0",
+    "semantic-release": "^17.4.3",
+    "ts-migrate": "^0.1.23",
+    "typescript": "^4.4.3",
     "watch": "^1.0.2"
   },
   "dependencies": {
     "bunyan": "^1.8.15",
     "bunyan-format": "^0.2.1",
-    "node-loggly-bulk": "^2.2.5",
-    "ts-migrate": "^0.1.23",
-    "typescript": "^4.4.3"
-  },
-  "babel": {
-    "presets": [
-      "env",
-      "stage-2"
-    ],
-    "plugins": [
-      [
-        "add-module-exports",
-        {
-          "addDefaultProperty": true
-        }
-      ]
-    ],
-    "sourceMaps": true
-  },
-  "eslintConfig": {
-    "extends": "@reactioncommerce",
-    "rules": {
-      "node/no-unsupported-features/es-syntax": "off"
-    }
+    "node-loggly-bulk": "^2.2.5"
   },
   "prettier": {
     "arrowParens": "always"

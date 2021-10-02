@@ -1,0 +1,13 @@
+{
+  "extends": "@reactioncommerce/eslint-config/node",
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "settings": {
+    "jest": {
+      "version": 26
+    }
+  }
+}

@@ -1,14 +1,22 @@
-// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module 'node... Remove this comment to see the full error message
-import loggly from "node-loggly-bulk";
+import { LogglyInstance } from "loggly";
+import loggly, { LogglyBulkOptions } from "node-loggly-bulk";
 
 class Bunyan2Loggly {
-  _buffer: any;
-  _timeoutId: any;
-  bufferLength: any;
-  bufferTimeout: any;
-  callback: any;
-  logglyClient: any;
-  constructor(logglyConfig: any, bufferLength = 1, bufferTimeout: any, callback: any) {
+  _buffer: any[];
+  _timeoutId: ReturnType<typeof setTimeout> | undefined;
+  bufferLength: number;
+  bufferTimeout: number | undefined;
+  // eslint-disable-next-line no-unused-vars
+  callback: (err: any, results: any, content: any) => void;
+  logglyClient: LogglyInstance;
+
+  constructor(
+    logglyConfig: LogglyBulkOptions,
+    bufferLength = 1,
+    bufferTimeout?: number,
+    // eslint-disable-next-line no-unused-vars
+    callback?: (err: any, results: any, content: any) => void
+  ) {
     if (!logglyConfig || !logglyConfig.token || !logglyConfig.subdomain) {
       throw new Error("bunyan-loggly requires a config object with token and subdomain");
     }
@@ -39,8 +47,10 @@ class Bunyan2Loggly {
     this._checkBuffer();
   }
 
-  _processBuffer() {
-    clearTimeout(this._timeoutId);
+  private _processBuffer() {
+    if (this._timeoutId) {
+      clearTimeout(this._timeoutId);
+    }
 
     let content = this._buffer.slice();
 
@@ -55,7 +65,7 @@ class Bunyan2Loggly {
     });
   }
 
-  _checkBuffer() {
+  private _checkBuffer() {
     if (!this._buffer.length) {
       return;
     }
@@ -66,7 +76,9 @@ class Bunyan2Loggly {
     }
 
     if (this.bufferTimeout) {
-      clearTimeout(this._timeoutId);
+      if (this._timeoutId) {
+        clearTimeout(this._timeoutId);
+      }
       this._timeoutId = setTimeout(() => { this._processBuffer(); }, this.bufferTimeout);
     }
   }
