@@ -5,24 +5,28 @@ import Bunyan2Loggly from "./loggly";
 
 // configure bunyan logging module for reaction server
 // See: https://github.com/trentm/node-bunyan#levels
-const levels = ["FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE"];
+const levels = ["fatal", "error", "warn", "info", "debug", "trace"];
 
-// set stdout log level
-let level = process.env.REACTION_LOG_LEVEL || "INFO";
+const customLevel = process.env.REACTION_LOG_LEVEL;
+
+let level: Bunyan.LogLevel = "info";
+if (customLevel && levels.includes(customLevel)) {
+  level = customLevel as Bunyan.LogLevel;
+}
 
 // allow overriding the stdout log formatting
-// available options: short|long|simple|json|bunyan
 // https://www.npmjs.com/package/bunyan-format
-const outputMode = process.env.REACTION_LOG_FORMAT || "short";
+const outputModes = ["short", "long", "simple", "json", "bunyan"];
+type OutputMode = "short" | "long" | "simple" | "json" | "bunyan";
 
-level = level.toUpperCase();
-
-if (!levels.includes(level)) {
-  level = "INFO";
+const customOutputMode = process.env.REACTION_LOG_FORMAT;
+let outputMode: OutputMode = "short";
+if (customOutputMode && outputModes.includes(customOutputMode)) {
+  outputMode = customOutputMode as OutputMode;
 }
 
 // default console config (stdout)
-const streams = [{
+const streams: Bunyan.Stream[] = [{
   level,
   stream: BunyanFormat({ outputMode })
 }];
@@ -32,19 +36,27 @@ const logglyToken = process.env.LOGGLY_TOKEN;
 const logglySubdomain = process.env.LOGGLY_SUBDOMAIN;
 
 if (logglyToken && logglySubdomain) {
-  const logglyStream = {
+  const logglyStream = <Bunyan.Stream>{
     type: "raw",
     level: process.env.LOGGLY_LOG_LEVEL || "DEBUG",
-    stream: new Bunyan2Loggly({
-      token: logglyToken,
-      subdomain: logglySubdomain
-    }, process.env.LOGGLY_BUFFER_LENGTH || 1)
+    stream: new Bunyan2Loggly(
+      {
+        token: logglyToken,
+        subdomain: logglySubdomain
+      },
+      process.env.LOGGLY_BUFFER_LENGTH ? +process.env.LOGGLY_BUFFER_LENGTH : 1
+    )
   };
   streams.push(logglyStream);
 }
 
+type ReactionLogger = Bunyan & {
+  bunyan?: typeof Bunyan,
+  bunyanFormat?: typeof BunyanFormat
+}
+
 // create default logger instance
-const Logger = Bunyan.createLogger({
+const Logger: ReactionLogger = Bunyan.createLogger({
   name: process.env.REACTION_LOGGER_NAME || "Reaction",
   streams
 });
