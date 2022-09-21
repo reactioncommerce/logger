@@ -1,3 +1,8 @@
+# This repository is deprecated
+
+This code is now located in our monorepo [here](https://github.com/reactioncommerce/reaction/tree/trunk/packages/logger)
+
+
 # reaction-logger
 
 Reaction uses the [Bunyan](https://github.com/trentm/node-bunyan) logging library to provide a stream capable log handler that can send your logs to a variety of places.  By default, the Reaction logger outputs to the console (stdout), but you can also stream your server side logs to services like [Loggly](https://www.loggly.com/) (see below) or even save them to your database.
